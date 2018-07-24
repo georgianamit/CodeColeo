@@ -5,5 +5,5 @@ from .models import Post
 # Create your views here.
 
 def check(request):
-    return render(request, "posts/check.html")
+    return render(request, "posts/check.html", {'sidebar': False})
 

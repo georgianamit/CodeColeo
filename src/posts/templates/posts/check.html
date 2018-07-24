@@ -1,1 +1,28 @@
 {% extends "base.html" %}
+{% load static %}
+{% block sidebar %}
+
+{% endblock sidebar %}
+
+{% block main-container-bar %}
+<main class="main-content  col-sm-12 p-0 {% if sidebar %} col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3 {% else %} col-lg-12 col-md-12 col-sm-12 p-0 {% endif %}">
+    <div class="main-navbar sticky-top bg-white">
+{% endblock main-container-bar %}
+
+
+{% block navbar-logo %}
+    <a class="navbar-brand w-25 mr-0" href="#" style="line-height: 25px;">
+        <div class="d-table m-auto">
+            <span class="d-none d-md-inline ml-1" style="font-family: 'Press Start 2P', cursive; font-size: 24px; ">Code</span> <span class="d-none d-md-inline ml-1" style="font-family: 'Orbitron', sans-serif; font-size: 24px;">Coleo</span>
+        </div>
+    </a>
+{% endblock navbar-logo %}
+
+
+{% block page-header %}
+
+{% endblock page-header %}
+
+{% block content %}
+
+{% endblock content %}
