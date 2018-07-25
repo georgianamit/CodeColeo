@@ -1,8 +1,8 @@
 from django.conf.urls import url
-from .views import check
-
+from .views import PostDetailView, PostListView
 
 urlpatterns = [
-    url(r'^$', check, name='check' ),
+    url(r'^detail/', PostDetailView.as_view(), name='PostDetail'),
+    url(r'^list/', PostListView.as_view(), name='PostList'),
 ]
 
