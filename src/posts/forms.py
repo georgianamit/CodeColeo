@@ -2,10 +2,13 @@ from django import forms
 from .models import Post
 
 class PostModelForm(forms.ModelForm):
+    content = forms.CharField(label='',
+                    widget=forms.Textarea(attrs={'placeholder':'Whats are you thinking?', 'class':'form-control form-control-lg mb-3'}
+                    ))
     class Meta:
         model = Post
         fields = [
-            'content'
+            'content',
         ]
 
     def clean_content(self,*args, **kwargs):

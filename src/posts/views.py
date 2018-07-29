@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Q
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from .models import Post
 from .forms import PostModelForm
@@ -57,7 +58,15 @@ class PostDetailView(DetailView):
 
 class PostListView(ListView):
     template_name = "posts/post_list.html"
-    queryset = Post.objects.all().order_by('-timestamp')
+
+    def get_queryset(self, *args, **kwargs):
+        qs = Post.objects.all().order_by('-timestamp')
+        query = self.request.GET.get('q', None)
+        if query is not None:
+            qs = qs.filter(
+                Q(content__icontains = query) |
+                Q(user__username__icontains = query))
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super(PostListView, self).get_context_data(**kwargs)
