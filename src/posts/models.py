@@ -12,8 +12,8 @@ class Post(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        return reverse("post:Detail", kwargs={"pk": self.pk})
+        return reverse("post:detail", kwargs={"pk": self.pk})
     
 
     def __str__(self):
-        return self.title
+        return self.content

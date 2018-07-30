@@ -17,6 +17,7 @@
         crossorigin="anonymous">
     <link rel="stylesheet" id="main-stylesheet" data-version="1.0.0" href="{% static 'styles/shards-dashboards.1.0.0.min.css' %}">
     <link rel="stylesheet" href="{% static 'styles/extras.1.0.0.min.css' %}">
+    {% block styles %}    {% endblock styles %}
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </head>
 
@@ -32,7 +33,7 @@
                 {% block navbar-logo %}
                 
                 {% endblock navbar-logo %}
-                <form method="GET" action="{% url 'post:List'%}" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
+                <form method="GET" action="{% url 'post:list'%}" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
                     <div class="input-group input-group-seamless ml-3">
                         <div class="input-group-prepend">
                             <div class="input-group-text">
@@ -155,6 +156,7 @@
     <script src="{% static 'scripts/extras.1.0.0.min.js' %}"></script>
     <script src="{% static 'scripts/shards-dashboards.1.0.0.min.js' %}"></script>
     <script src="{% static 'scripts/app/app-blog-overview.1.0.0.js' %}"></script>
+    {% block scripts %}   {% endblock scripts %}
 </body>
 
 </html>

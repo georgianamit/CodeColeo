@@ -103,6 +103,8 @@
                     {{ form.as_p }}
                     <input type="submit" value="POST" class="mb-2 btn btn-sm btn-outline-primary mr-1"/>
                 </form>
+                {% include "posts/form.html" with form=form action_url=post_url btn_title='POST' form_id='post-form' %}
+
             </div>
           </div>
           <!-- / Add New Post Form -->
