@@ -10,8 +10,7 @@ function getParameterByName(name, url) {
 
 
 $(document).ready(function () {
-    console.log('working')
-
+    
     var query = getParameterByName('q')
     var postList = [];
 
