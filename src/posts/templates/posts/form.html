@@ -1,4 +1,4 @@
-<form action="{% if action_url %} {{ action_url }} {% endif %}" {% if form_id %} id = {{form_id}} {% endif %} method='post'>
+<form action="{% if action_url %} {{ action_url }} {% endif %}" id="post-form" method='post'>
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="{{btn_title}}" class="mb-1 btn btn-sm btn-outline-primary mt-0 ml-auto"/>
