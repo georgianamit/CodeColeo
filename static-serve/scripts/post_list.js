@@ -79,7 +79,8 @@ $(document).ready(function () {
             error: function (data) {
                 console.log("error")
                 console.log(data)
-            }    
+            }
+    
         })
     }
     fetchPosts()
@@ -103,6 +104,10 @@ $(document).ready(function () {
                 console.log("error")
                 console.log(data)
             }
+    
         })
+
+        
+
     })
 });
