@@ -11,7 +11,7 @@
 
 {% block sidebar %}
 {% url 'post:list' as homelink %}
-{% include "posts/sidebar.html" with home="active" home_link=homelink %}
+{% include "sidebar.html" with home="active" home_link=homelink %}
 {% endblock sidebar %}
 
 {% block main-container-bar %}
@@ -42,6 +42,7 @@
 					<div  id="post-list">
 
 					</div>
+					<a href="#" id="loadmore">Load More posts</a>
 				</div>
 				<div class="col-lg-4">
 						<div class="page-header row no-gutters py-0">

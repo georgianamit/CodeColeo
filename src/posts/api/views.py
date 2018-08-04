@@ -3,6 +3,7 @@ from rest_framework import permissions
 from .serializers import PostModelSerializer
 from django.db.models import Q
 from posts.models import Post
+from .pagination import StandardResultsPagination
 
 class PostCreateAPIView(generics.CreateAPIView):
     serializer_class = PostModelSerializer
@@ -13,6 +14,7 @@ class PostCreateAPIView(generics.CreateAPIView):
 
 class PostListAPIView(generics.ListAPIView):
     serializer_class = PostModelSerializer
+    pagination_class = StandardResultsPagination
 
     def get_queryset(self, *args, **kwargs):
         qs = Post.objects.all().order_by('-timestamp')

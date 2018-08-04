@@ -22,4 +22,7 @@ class PostModelSerializer(serializers.ModelSerializer):
         return obj.timestamp.strftime("%b %d %I:%M %p")
 
     def get_timesince(self, obj):
-        return timesince(obj.timestamp) + " ago"
+        if timesince(obj.timestamp)[0] is '0':
+            return "Just Now"
+        else:
+            return timesince(obj.timestamp) + " ago"
