@@ -9,6 +9,5 @@ urlpatterns = [
     # url(r'^update/(?P<pk>\d+)/$', PostUpdateView.as_view(), name='update'),
     # url(r'^delete/(?P<pk>\d+)/$', PostDeleteView.as_view(), name='delete'),
     # url(r'^list/', PostListView.as_view(), name='list'),
-    
 ]
 
