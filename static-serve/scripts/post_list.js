@@ -13,6 +13,7 @@ $(document).ready(function () {
     
     var query = getParameterByName('q')
     var postList = [];
+    var nextPostUrl;
 
     function attachPost(postValue, prepend) {
         var postContent = postValue.content;
@@ -23,7 +24,7 @@ $(document).ready(function () {
                 '<div class="card-post__author d-flex">'+
                     '<a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url(\'images/avatars/1.jpg\');">Written by James Khan</a>'+
                     '<div class="d-flex flex-column justify-content-center ml-3">'+
-                        '<span class="card-post__author-name">' + '@' + postUser.username + '</span>'+
+                        '<span class="card-post__author-name">' + '<a href="'+ postUser.url +'">@' + postUser.username + '</a></span>'+
                         '<small class="text-muted">'+ timeSince +'</small>'+
                     '</div>'+
                 '</div> <hr>'+
@@ -64,32 +65,48 @@ $(document).ready(function () {
 
     }
 
-    function fetchPosts() {
+    function fetchPosts(url) {
         console.log('fetching...')
+        var fetchUrl;
+        if(!url){
+            fetchUrl = '/api/post/';
+        }else{
+            fetchUrl = url
+        }
         $.ajax({
-            url: '/api/post/',
+            url: fetchUrl,
             method: 'GET',
             data: {
                 'q':query
             },
             success: function (data) {
-                postList = data
+                postList = data.results
+                if(data.next){
+                    nextPostUrl = data.next
+                }else{
+                    $('#loadmore').css("display","none")
+                }
+                
                 parsePosts()
             },
             error: function (data) {
                 console.log("error")
                 console.log(data)
-            }
-    
+            }    
         })
     }
     fetchPosts()
 
+    $('#loadmore').click(function(event){
+        event.preventDefault()
+        if(nextPostUrl){
+            fetchPosts(nextPostUrl)
+        }
+    })
+
     $("#post-form").submit(function(event){
         event.preventDefault()
-        console.log('preventing...')
-        console.log(event)
-        var this_ = $(this)
+        var this_ = $(this) 
         var formData = this_.serialize()
 
         $.ajax({
@@ -97,17 +114,13 @@ $(document).ready(function () {
             method: 'POST',
             data: formData,
             success: function (data) {
-                this_.find("[input[type=text], textarea").val("")
                 attachPost(data,true);
+                this_.find("input[type=text], textarea").val("")
             },
             error: function (data) {
                 console.log("error")
                 console.log(data)
             }
-    
         })
-
-        
-
     })
 });

@@ -10,7 +10,9 @@ class Post(models.Model):
     content = models.CharField(max_length=155)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-
+    
+    class Meta:
+        ordering = ['-timestamp']
     def get_absolute_url(self):
         return reverse("post:detail", kwargs={"pk": self.pk})
     

@@ -70,7 +70,7 @@ class PostListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(PostListView, self).get_context_data(**kwargs)
-        context["sidebar"] = True 
+        context["sidebar"] = False
         context['form'] = PostModelForm()
         context['post_url'] = reverse_lazy("post:create")
         return context

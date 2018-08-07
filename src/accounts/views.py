@@ -12,6 +12,6 @@ class UserDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["sidebar"] = True
+        context["sidebar"] = False
         return context
     

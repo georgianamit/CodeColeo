@@ -24,7 +24,7 @@ $(document).ready(function () {
                 '<div class="card-post__author d-flex">'+
                     '<a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url(\'images/avatars/1.jpg\');">Written by James Khan</a>'+
                     '<div class="d-flex flex-column justify-content-center ml-3">'+
-                        '<span class="card-post__author-name">' + '@' + postUser.username + '</span>'+
+                        '<span class="card-post__author-name">' + '<a href="'+ postUser.url +'">@' + postUser.username + '</a></span>'+
                         '<small class="text-muted">'+ timeSince +'</small>'+
                     '</div>'+
                 '</div> <hr>'+
