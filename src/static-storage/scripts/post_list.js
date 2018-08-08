@@ -21,13 +21,13 @@ $(document).ready(function () {
         var timeSince = postValue.timesince;
         var postHtmlBody = '<div class="card card-small card-post mb-4" >'+
             '<div class="card-body" >'+
-                '<div class="card-post__author d-flex">'+
+                '<div class="card-post__author d-flex border-bottom">'+
                     '<a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url(\'images/avatars/1.jpg\');">Written by James Khan</a>'+
                     '<div class="d-flex flex-column justify-content-center ml-3">'+
                         '<span class="card-post__author-name">' + '<a href="'+ postUser.url +'">@' + postUser.username + '</a></span>'+
                         '<small class="text-muted">'+ timeSince +'</small>'+
                     '</div>'+
-                '</div> <hr>'+
+                '</div>'+
                     '<!-- <h5 class="card-title">{{ object.title }}</h5> -->'+
 '<p class="card-text text-muted">' + postContent + '</p>'+
         '</div>'+
