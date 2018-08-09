@@ -1,3 +1,9 @@
 brand-text{
     font-family: 'Press Start 2P', cursive;
 }
+.glyphicon {
+    font-size: 20px;
+}
+.blue {
+    color: blue;
+}

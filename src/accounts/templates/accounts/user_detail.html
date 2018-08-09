@@ -32,9 +32,9 @@
       <div class="card card-small mb-4 pt-3">
         <div class="card-header border-bottom text-center">
           <div class="mb-3 mx-auto">
-            <img class="rounded-circle" src="{% static 'images/avatars/0.jpg'%}" alt="User Avatar" width="110"> </div>
-          <h4 class="mb-0">{{object.username}}</h4>
-          <span class="text-muted d-block mb-2">Project Manager</span>
+            <img class="rounded-circle" src="{% static 'images/avatars/0.jpg'%}" alt="User Avatar" width="180"> </div>
+          <h4 class="mb-0"> {{ object.first_name }} {{ object.last_name }} </h4>
+          <span class="text-muted d-block mb-2">@{{object.username}}</span>
           <button type="button" class="mb-2 btn btn-sm btn-pill btn-outline-primary mr-2">
             <i class="material-icons mr-1">person_add</i>Follow</button>
         </div>
@@ -57,56 +57,108 @@
       </div>
     </div>
     <div class="col-lg-7">
-      <div class="card card-small mb-4">
-        <div class="card-header border-bottom">
-          <h6 class="m-0">Profile</h6>
-        </div>
+      <div class="card card-small mb-4 p-2">
+
         <ul class="list-group list-group-flush">
           <li class="list-group-item p-3">
             <div class="row">
               <div class="col-lg-4 ">
-                <h5>Posts: <a href="#">34</a></h5>
+                <h5>Posts: <a href="#" data-toggle="modal" data-target="#exampleModalCenter"> {{object.post_set.count}} </a></h5>
               </div>
               <div class="col-lg-4">
-                  <h5>Followers: <a href="#">67</a></h5>
+                  <h5>Followers: <a href="#" data-toggle="modal" data-target="#followersModal"> {{ object.followed_by.all.count}} </a></h5>
               </div>
               <div class="col-lg-4 ">
-                  <h5>Following: <a href="#">128</a></h5>
+                  <h5>Following: <a href="#" data-toggle="modal" data-target="#followingModal"> {{ object.profile.get_following.count }} </a></h5>
               </div>
             </div>
-
           </li>
         </ul>
       </div>
+      {% for post in object.post_set.all %}
+        {{ post }} <br>
+      {% endfor %}
       <div class="card card-small card-post mb-4">
-          <div class="card-header border-bottom d-flex">
-              <div class="card-post__author d-flex">
-                <!-- <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('images/avatars/3.jpg');">Written by Anna Kunis</a> -->
-                <img class="card-post__author-avatar card-post__author-avatar--small" src="{% static 'images/avatars/0.jpg' %}" alt="User Avatar">
-                <div class="d-flex flex-column justify-content-center ml-3">
-                  <span class="card-post__author-name">Mark Jameson</span>
-                  <small class="text-muted">21 March 2011</small>
-                </div>
-              </div>
-              <div class="my-auto ml-auto">
-                <a class="btn btn-sm btn-white py-0" href="#"> <h5>...</h5> </a>
+        <div class="card-header border-bottom d-flex">
+            <div class="card-post__author d-flex">
+              <!-- <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('images/avatars/3.jpg');">Written by Anna Kunis</a> -->
+              <img class="card-post__author-avatar card-post__author-avatar--small" src="{% static 'images/avatars/0.jpg' %}" alt="User Avatar">
+              <div class="d-flex flex-column justify-content-center ml-3">
+                <span class="card-post__author-name">Mark Jameson</span>
+                <small class="text-muted">21 March 2011</small>
               </div>
             </div>
-        <div class="card-body">
-          <h5 class="card-title">Instantly gentleman contained belonging exquisite now direction</h5>
-          <p class="card-text text-muted">West room at sent if year. Numerous indulged distance old law you. Total state as merit court green decay he. Steepest merit checking railway...</p>
-        </div>
-        <div class="card-footer border-top d-flex">
-            <button type="button" class="mb-2 btn btn-sm btn-outline-light mr-1 glyphicon glyphicon-thumbs-up">Light</button>
-
-          <div class="my-auto ml-auto">
-            <a class="btn btn-sm btn-white" href="#">
-              <i class="far fa-bookmark mr-1"></i> Bookmark </a>
+            <div class="my-auto ml-auto">
+              <button class="btn btn-sm btn-white py-0" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <h5>...</h5> </button>
+              <ul class="dropdown-menu px-2" aria-labelledby="dropdownMenu1">
+                  <li><a href="#">Edit</a></li>
+                  <li><a href="#">Delete</a></li>
+                </ul>
+            </div>
           </div>
+      <div class="card-body">
+        <!-- <h5 class="card-title">Instantly gentleman contained belonging exquisite now direction</h5> -->
+        <p class="card-text text-muted">West room at sent if year. Numerous indulged distance old law you. Total state as merit court green decay he. Steepest merit checking railway...</p>
+      </div>
+      <div class="card-footer border-top d-flex">
+          <button type="button" class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">456</span> </button>
+          <button type="button" class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> <span class="badge badge-danger">231</span> </button>
+          <button type="button" class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> <span class="badge badge-success">64</span> </button>
+          <button type="button" class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span class="badge badge-info">126</span> </button>
+
+        <div class="my-auto ml-auto">
+          <a class="btn btn-sm btn-white" href="#"> Read More. </a>
         </div>
+      </div>
       </div>
     </div>
     <div class="col-lg-1">
+    </div>
+  </div>
+
+  <!-- followersModal -->
+<div class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="followersModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="followersModalTitle">Followers <small>{{ object.followed_by.all.count}}</small> </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% for profile in object.followed_by.all %}
+          <a href="/{{ profile.user.username }}">{{ profile.user.username }}</a><br>
+        {% empty %}
+        <h4>Currently no User is following you.</h4>
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- followingModal -->
+  <div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="followingModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="followingModalTitle">Following <small>{{ object.profile.get_following.count }}</small> </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% for user in object.profile.get_following %}
+            <a href="/{{ user.username }}"> {{ user.username }} </a> <br>
+          {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock content %}
