@@ -9,7 +9,7 @@ class UserDetailView(DetailView):
 
     def get_object(self):
             return get_object_or_404(User, username__iexact=self.kwargs.get("username"))
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["sidebar"] = False
