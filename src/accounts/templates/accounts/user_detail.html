@@ -35,8 +35,8 @@
             <img class="rounded-circle" src="{% static 'images/avatars/0.jpg'%}" alt="User Avatar" width="180"> </div>
           <h4 class="mb-0"> {{ object.first_name }} {{ object.last_name }} </h4>
           <span class="text-muted d-block mb-2">@{{object.username}}</span>
-          <button type="button" class="mb-2 btn btn-sm btn-pill btn-outline-primary mr-2">
-            <i class="material-icons mr-1">person_add</i>Follow</button>
+          <a href="{{ object.profile.get_follow_url}}" class="mb-2 btn btn-sm btn-pill btn-outline-primary mr-2">
+            <i class="material-icons mr-1">person_add</i> {% if following %} Unfollow {% else %} Follow {% endif %} </a>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item px-4">
