@@ -15,6 +15,14 @@ $(document).ready(function () {
     var postList = [];
     var nextPostUrl;
 
+    function updateHashLinks(){
+        $(".card-text").each(function(data){
+            var hashtagregx = /(^|\s)#([\w\d-]+)/g
+            var newText = $(this).html().replace(hashtagregx, "$1<a href='/tags/$2/'>#$2</a>")
+            $(this).html(newText)
+        })
+    }
+
     function attachPost(postValue, prepend) {
         var postContent = postValue.content;
         var postUser = postValue.user;
@@ -29,7 +37,7 @@ $(document).ready(function () {
                     '</div>'+
                 '</div>'+
                     '<!-- <h5 class="card-title">{{ object.title }}</h5> -->'+
-'<p class="card-text text-muted">' + postContent + '</p>'+
+'<p class="card-text">' + postContent + '</p>'+
         '</div>'+
                 '<div class="card-footer border-top d-flex">'+
                     '<div class="my-auto ml-2">'+
@@ -88,6 +96,7 @@ $(document).ready(function () {
                 }
                 
                 parsePosts()
+                updateHashLinks()
             },
             error: function (data) {
                 console.log("error")
@@ -115,6 +124,7 @@ $(document).ready(function () {
             data: formData,
             success: function (data) {
                 attachPost(data,true);
+                updateHashLinks()
                 this_.find("input[type=text], textarea").val("")
             },
             error: function (data) {
