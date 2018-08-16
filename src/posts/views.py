@@ -1,10 +1,20 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
+from django.views import View
 from .models import Post
 from .forms import PostModelForm
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 # Create your views here.
+
+class ShareView(View):
+    def get(self, request, pk, *args, **kwargs):
+        post = get_object_or_404(Post, pk=pk)
+        if request.user.is_authenticated():
+            new_post = Post.objects.share(request.user, post)
+            return HttpResponseRedirect("/")
+        return HttpResponseRedirect(post.get_absolute_url())
 
 class PostCreateView(CreateView):
     form_class = PostModelForm
