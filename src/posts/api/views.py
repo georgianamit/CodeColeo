@@ -4,6 +4,21 @@ from .serializers import PostModelSerializer
 from django.db.models import Q
 from posts.models import Post
 from .pagination import StandardResultsPagination
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+class ShareAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk, format=None):
+        post_qs = Post.objects.filter(pk=pk)
+        if post_qs.exists() and post_qs.count() == 1:
+            # if request.user.is_authenticated():
+            new_post = Post.objects.share(request.user, post_qs.first())
+            if new_post is not None:
+                data = PostModelSerializer(new_post).data
+                return Response(data)
+        return Response(None, status=400)
 
 class PostCreateAPIView(generics.CreateAPIView):
     serializer_class = PostModelSerializer
