@@ -37,7 +37,11 @@ $(document).ready(function () {
     function updateHashLinks(){
         $(".card-text").each(function(data){
             var hashtagregx = /(^|\s)#([\w\d-]+)/g
-            var newText = $(this).html().replace(hashtagregx, "$1<a href='/tags/$2/'>#$2</a>")
+            var usernameregx = /(^|\s)@([\w\d-]+)/g
+            var currentHtml = $(this).html()
+            var newText;
+            var newText = currentHtml.replace(hashtagregx, "$1<a href='/tags/$2/'>#$2</a>")
+            var newText = newText.replace(usernameregx, "$1<a href='/$2/'>@$2</a>")
             $(this).html(newText)
         })
     }

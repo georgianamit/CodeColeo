@@ -1,8 +1,11 @@
+import re
+
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-
+from django.db.models.signals import post_save
+from hashtags.signals import parsed_hashtags
 # Create your models here.
 
 class PostManager(models.Manager):
@@ -41,3 +44,16 @@ class Post(models.Model):
 
     def __str__(self):
         return self.content
+
+
+def post_save_receiver(sender, instance, created, *args, **kwargs):
+    if created and not instance.parent:
+        user_regx = r'@(?P<username>[\w.@+-]+)'
+        usernames = re.findall(user_regx, instance.content)
+
+        hash_regx = r'#(?P<hashtag>[\w\d-]+)'
+        hashtags = re.findall(hash_regx, instance.content)
+        parsed_hashtags.send(sender=instance.__class__, hashtag_list = hashtags)
+
+
+post_save.connect(post_save_receiver, sender=Post)
