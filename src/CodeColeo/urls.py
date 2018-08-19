@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^post/', include('posts.urls', namespace="post")),
     url(r'^', include('accounts.urls', namespace="profiles")),
     url(r'^api/post/', include('posts.api.urls', namespace="post-api")),
+    url(r'^api/', include('accounts.api.urls', namespace="profiles-api")),
 ]
 
 if settings.DEBUG:

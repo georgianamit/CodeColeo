@@ -1,5 +1,11 @@
 {% extends "base.html" %}
+
 {% load static %}
+
+{% block scripts %}
+<script src="{% static 'scripts/post_list.js' %}"></script>
+{% endblock scripts %}
+
 {% block sidebar %}
 <!-- {% url 'profiles:user_detail' as profilelink %}
 {% include "sidebar.html" with profile="active" profile_link=profilelink %} -->
@@ -9,6 +15,7 @@
 <main class="main-content  col-sm-12 p-0 {% if sidebar %} col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3 {% else %} col-lg-12 col-md-12 col-sm-12 p-0 {% endif %}">
     <div class="main-navbar sticky-top bg-white">
 {% endblock main-container-bar %}
+
 
 
 {% block navbar-logo %}
@@ -75,6 +82,10 @@
           </li>
         </ul>
       </div>
+      <div  id="post-container" data-url="/api/{{ object.username }}/post/">
+
+      </div>
+      <a href="#" id="loadmore">Load More posts</a>
       {% for post in object.post_set.all %}
         {{ post }} <br>
       {% endfor %}

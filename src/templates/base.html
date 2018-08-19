@@ -162,6 +162,216 @@
     <script src="{% static 'scripts/extras.1.0.0.min.js' %}"></script>
     <script src="{% static 'scripts/shards-dashboards.1.0.0.min.js' %}"></script>
     <script src="{% static 'scripts/app/app-blog-overview.1.0.0.js' %}"></script>
+    <script>
+        function loadPostContainer(postContainerID){
+            var query = getParameterByName('q')
+            var postList = [];
+            var nextPostUrl;
+            
+            var postContainer;
+            if(postContainerID){
+                postContainer = $("#"+postContainerID)
+            }else{
+                postContainer = $("#post-container")
+            }
+            var initialUrl = postContainer.attr("data-url") || '/api/post/';
+        
+            $(document.body).on("click",".shareBtn", function(e){
+                e.preventDefault()
+                var url = "/api" + $(this).attr('href')
+        
+                $.ajax({
+                    url: url,
+                    method: "GET",
+                    success:function(data){
+                        console.log(data)
+                        if(initialUrl == "/api/post/"){
+                            attachPost(data,true,true);
+                            updateHashLinks()
+                        }
+                        
+                    },
+                    error:function(data){
+                        console.log("error")
+                        console.log(data)
+                    }
+                })
+            })
+        
+            function updateHashLinks(){
+                $(".card-text").each(function(data){
+                    var hashtagregx = /(^|\s)#([\w\d-]+)/g
+                    var usernameregx = /(^|\s)@([\w\d-]+)/g
+                    var currentHtml = $(this).html()
+                    var newText;
+                    var newText = currentHtml.replace(hashtagregx, "$1<a href='/tags/$2/'>#$2</a>")
+                    var newText = newText.replace(usernameregx, "$1<a href='/$2/'>@$2</a>")
+                    $(this).html(newText)
+                })
+            }
+        
+            function attachPost(postValue, prepend, share) {
+                var postContent = postValue.content;
+                var postUser = postValue.user;
+                var timeSince = postValue.timesince;
+                var postHtmlBody;
+                if(share && postValue.parent){
+                    parentUser = postValue.parent.user
+                        var postHtmlBody= '<div class="card card-small card-post mb-4">'+
+                            '<div class="card-header border-bottom d-flex">'+
+                                '<div class="card-post__author d-flex">'+
+                                  '<div class="d-flex flex-column justify-content-center ml-3">'+
+                                    '<span class="card-post__author-name">'+ '<a href="' + '<a href="'+ postUser.url +'">@' + postUser.username + '</a><small> shared the post of <a href="'+parentUser.url+'">@'+ parentUser.username +'</a></small></span>'+
+                                    '<small class="text-muted">'+ timeSince +'</small>'+
+                                  '</div>'+
+                                '</div>'+
+                                '<div class="my-auto ml-auto">'+
+                                  '<button class="btn btn-sm btn-white py-0" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <h5>...</h5> </button>'+
+                                  '<ul class="dropdown-menu px-2" aria-labelledby="dropdownMenu1">'+
+                                      '<li><a href="#">Edit</a></li>'+
+                                      '<li><a href="#">Delete</a></li>'+
+                                    '</ul>'+
+                                '</div>'+
+                              '</div>'+
+                          '<div class="card-body">'+
+                            '<!-- <h5 class="card-title">Instantly gentleman contained belonging exquisite now direction</h5> -->'+
+                            '<p class="card-text text-muted">' + postContent + '</p>'+
+                          '</div>'+
+                          '<div class="card-footer border-top d-flex">'+
+                              '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">456</span> </a>'+
+                              '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> <span class="badge badge-danger">231</span> </a>'+
+                              '<a class="mb-0 btn btn-sm btn-outline-light mr-1 shareBtn" href="/post/share/' + postValue.id +'"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> <span class="badge badge-success">64</span> </a>'+
+                              '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span class="badge badge-info">126</span> </a>'+
+                    
+                            '<div class="my-auto ml-auto">'+
+                              '<a class="btn btn-sm btn-white" href="/post/detail/' + postValue.id + '"> Read More. </a>'+
+                            '</div>'+
+                          '</div>'+
+                          '</div>'
+        
+                }else{
+                    var postHtmlBody= '<div class="card card-small card-post mb-4">'+
+                        '<div class="card-header border-bottom d-flex">'+
+                            '<div class="card-post__author d-flex">'+
+                              '<div class="d-flex flex-column justify-content-center ml-3">'+
+                                '<span class="card-post__author-name">'+ '<a href="'+ postUser.url +'">@' + postUser.username + '</a></span>'+
+                                '<small class="text-muted">'+ timeSince +'</small>'+
+                              '</div>'+
+                            '</div>'+
+                            '<div class="my-auto ml-auto">'+
+                              '<button class="btn btn-sm btn-white py-0" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <h5>...</h5> </button>'+
+                              '<ul class="dropdown-menu px-2" aria-labelledby="dropdownMenu1">'+
+                                  '<li><a href="#">Edit</a></li>'+
+                                  '<li><a href="#">Delete</a></li>'+
+                                '</ul>'+
+                            '</div>'+
+                          '</div>'+
+                      '<div class="card-body">'+
+                        '<!-- <h5 class="card-title">Instantly gentleman contained belonging exquisite now direction</h5> -->'+
+                        '<p class="card-text text-muted">' + postContent + '</p>'+
+                      '</div>'+
+                      '<div class="card-footer border-top d-flex">'+
+                          '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">456</span> </a>'+
+                          '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> <span class="badge badge-danger">231</span> </a>'+
+                          '<a class="mb-0 btn btn-sm btn-outline-light mr-1 shareBtn" href="/post/share/' + postValue.id +'"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> <span class="badge badge-success">64</span> </a>'+
+                          '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span class="badge badge-info">126</span> </a>'+
+                
+                        '<div class="my-auto ml-auto">'+
+                          '<a class="btn btn-sm btn-white" href="/post/detail/' + postValue.id + '"> Read More. </a>'+
+                        '</div>'+
+                      '</div>'+
+                      '</div>'
+        
+                }
+        
+                if(prepend == true){
+                    postContainer.prepend(postHtmlBody);
+                }else{
+                    postContainer.append(postHtmlBody);
+                }
+            }
+        
+            function parsePosts() {
+                if(postList == 0){
+                    postContainer.text("No Posts Found!")
+                }else{
+                    $.each(postList, function (key, value) {
+                        var postKey = key;
+                        if(value.parent){
+                            attachPost(value,false, true)
+                        }else{
+                            attachPost(value,false)
+                        }
+                        
+                    })
+                }
+        
+            }
+        
+            function fetchPosts(url) {
+                console.log('fetching...')
+                var fetchUrl;
+                if(!url){
+                    fetchUrl = initialUrl;
+                }else{
+                    fetchUrl = url
+                }
+                $.ajax({
+                    url: fetchUrl,
+                    method: 'GET',
+                    data: {
+                        'q':query
+                    },
+                    success: function (data) {
+                        postList = data.results
+                        if(data.next){
+                            nextPostUrl = data.next
+                        }else{
+                            $('#loadmore').css("display","none")
+                        }
+                        
+                        parsePosts()
+                        updateHashLinks()
+                    },
+                    error: function (data) {
+                        console.log("error")
+                        console.log(data)
+                    }    
+                })
+            }
+            fetchPosts()
+        
+            $('#loadmore').click(function(event){
+                event.preventDefault()
+                if(nextPostUrl){
+                    fetchPosts(nextPostUrl)
+                }
+            })
+        
+            $("#post-form").submit(function(event){
+                event.preventDefault()
+                var this_ = $(this) 
+                var formData = this_.serialize()
+        
+                $.ajax({
+                    url: '/api/post/create/',
+                    method: 'POST',
+                    data: formData,
+                    success: function (data) {
+                        attachPost(data,true);
+                        updateHashLinks()
+                        this_.find("input[type=text], textarea").val("")
+                    },
+                    error: function (data) {
+                        console.log("error")
+                        console.log(data)
+                    }
+                })
+            })
+        }
+
+        
+    </script>
     {% block scripts %}   {% endblock scripts %}
 </body>
 
