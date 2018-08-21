@@ -175,7 +175,31 @@
                 postContainer = $("#post-container")
             }
             var initialUrl = postContainer.attr("data-url") || '/api/post/';
-        
+            
+            $(document.body).on("click",".likeBtn",function(e){
+                e.preventDefault()
+                this_ = $(this)
+                var postId = this_.attr("data-id")
+                var likedUrl = "/api/post/like/"+postId+"/"
+                
+                $.ajax({
+                    url: likedUrl,
+                    method: "GET",
+                    success: function(data){
+                        console.log(data)
+                        if(data.liked){
+                            this_.text("liked")
+                        }else{
+                            this_.text("dislike")
+                        }
+                    },
+                    error: function(data){
+                        console.log("error")
+                        console.log(data)
+                    }
+                })
+            })
+
             $(document.body).on("click",".shareBtn", function(e){
                 e.preventDefault()
                 var url = "/api" + $(this).attr('href')
@@ -238,7 +262,7 @@
                             '<p class="card-text text-muted">' + postContent + '</p>'+
                           '</div>'+
                           '<div class="card-footer border-top d-flex">'+
-                              '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">456</span> </a>'+
+                              '<a class="mb-0 btn btn-sm btn-outline-light mr-1 likeBtn" data-id='+ postValue.id +'><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">456</span> </a>'+
                               '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> <span class="badge badge-danger">231</span> </a>'+
                               '<a class="mb-0 btn btn-sm btn-outline-light mr-1 shareBtn" href="/post/share/' + postValue.id +'"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> <span class="badge badge-success">64</span> </a>'+
                               '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span class="badge badge-info">126</span> </a>'+
@@ -271,7 +295,7 @@
                         '<p class="card-text text-muted">' + postContent + '</p>'+
                       '</div>'+
                       '<div class="card-footer border-top d-flex">'+
-                          '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">456</span> </a>'+
+                          '<a class="mb-0 btn btn-sm btn-outline-light mr-1 likeBtn" data-id='+ postValue.id +'><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">456</span> </a>'+
                           '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> <span class="badge badge-danger">231</span> </a>'+
                           '<a class="mb-0 btn btn-sm btn-outline-light mr-1 shareBtn" href="/post/share/' + postValue.id +'"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> <span class="badge badge-success">64</span> </a>'+
                           '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span class="badge badge-info">126</span> </a>'+
