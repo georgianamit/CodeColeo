@@ -33,6 +33,7 @@ class PostModelSerializer(serializers.ModelSerializer):
     date_display = serializers.SerializerMethodField()
     timesince = serializers.SerializerMethodField()
     parent = ParentPostModelSerializer(read_only=True)
+    likes = serializers.SerializerMethodField()
     class Meta:
         model = Post
         fields =[
@@ -42,7 +43,8 @@ class PostModelSerializer(serializers.ModelSerializer):
             'timestamp',
             'date_display',
             'timesince',
-            'parent'
+            'parent',
+            'likes'
         ]
 
     def get_date_display(self,obj):
@@ -53,3 +55,6 @@ class PostModelSerializer(serializers.ModelSerializer):
             return "Just Now"
         else:
             return timesince(obj.timestamp) + " ago"
+
+    def get_likes(self, obj):
+        return obj.liked.all().count()
