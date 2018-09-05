@@ -27,7 +27,6 @@ class ParentPostModelSerializer(serializers.ModelSerializer):
         else:
             return timesince(obj.timestamp) + " ago"
 
-
 class PostModelSerializer(serializers.ModelSerializer):
     user = UserDisplaySerializer(read_only=True)
     date_display = serializers.SerializerMethodField()

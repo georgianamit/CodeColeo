@@ -36,7 +36,6 @@ class UserProfileManager(models.Manager):
             return True
         return False
  
-
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='profile')
     following = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True, related_name='followed_by')
