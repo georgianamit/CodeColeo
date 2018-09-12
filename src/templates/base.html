@@ -188,9 +188,9 @@
                     success: function(data){
                         console.log(data)
                         if(data.liked){
-                            this_.text("liked")
+                            this_.addClass("text-success")
                         }else{
-                            this_.text("dislike")
+                            this_.removeClass("text-success")
                         }
                     },
                     error: function(data){
@@ -239,6 +239,10 @@
                 var postUser = postValue.user;
                 var timeSince = postValue.timesince;
                 var postHtmlBody;
+                var likeClass = ""
+                if(postValue.did_like){
+                    likeClass = "text-success"
+                }
                 if(share && postValue.parent){
                     parentUser = postValue.parent.user
                         var postHtmlBody= '<div class="card card-small card-post mb-4">'+
@@ -262,7 +266,7 @@
                             '<p class="card-text text-muted">' + postContent + '</p>'+
                           '</div>'+
                           '<div class="card-footer border-top d-flex">'+
-                              '<a class="mb-0 btn btn-sm btn-outline-light mr-1 likeBtn" data-id='+ postValue.id +'><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">' + postValue.liked +'</span> </a>'+
+                              '<a class="mb-0 btn btn-sm btn-outline-light mr-1 likeBtn '+ likeClass +'" data-id='+ postValue.id +'><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">' + postValue.likes +'</span> </a>'+
                               '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> <span class="badge badge-danger">231</span> </a>'+
                               '<a class="mb-0 btn btn-sm btn-outline-light mr-1 shareBtn" href="/post/share/' + postValue.id +'"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> <span class="badge badge-success">64</span> </a>'+
                               '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span class="badge badge-info">126</span> </a>'+
@@ -294,7 +298,7 @@
                         '<p class="card-text text-muted">' + postContent + '</p>'+
                       '</div>'+
                       '<div class="card-footer border-top d-flex">'+
-                          '<a class="mb-0 btn btn-sm btn-outline-light mr-1 likeBtn" data-id='+ postValue.id +'><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">' + postValue.liked +'</span> </a>'+
+                          '<a class="mb-0 btn btn-sm btn-outline-light mr-1 likeBtn '+ likeClass +'" data-id='+ postValue.id +'><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">' + postValue.likes +'</span> </a>'+
                           '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> <span class="badge badge-danger">231</span> </a>'+
                           '<a class="mb-0 btn btn-sm btn-outline-light mr-1 shareBtn" href="/post/share/' + postValue.id +'"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> <span class="badge badge-success">64</span> </a>'+
                           '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span class="badge badge-info">126</span> </a>'+
