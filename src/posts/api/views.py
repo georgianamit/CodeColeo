@@ -40,6 +40,11 @@ class PostListAPIView(generics.ListAPIView):
     serializer_class = PostModelSerializer
     pagination_class = StandardResultsPagination
 
+    def get_serializer_context(self, *args, **kwargs):
+            context = super(PostListAPIView, self).get_serializer_context(*args, **kwargs)
+            context['request'] = self.request
+            return context
+
     def get_queryset(self, *args, **kwargs):
         requested_user = self.kwargs.get("username")
         if requested_user:

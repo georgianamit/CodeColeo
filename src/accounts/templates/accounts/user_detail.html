@@ -86,42 +86,7 @@
 
       </div>
       <a href="#" id="loadmore">Load More posts</a>
-      {% for post in object.post_set.all %}
-        {{ post }} <br>
-      {% endfor %}
-      <div class="card card-small card-post mb-4">
-        <div class="card-header border-bottom d-flex">
-            <div class="card-post__author d-flex">
-              <!-- <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('images/avatars/3.jpg');">Written by Anna Kunis</a> -->
-              <img class="card-post__author-avatar card-post__author-avatar--small" src="{% static 'images/avatars/0.jpg' %}" alt="User Avatar">
-              <div class="d-flex flex-column justify-content-center ml-3">
-                <span class="card-post__author-name">Mark Jameson</span>
-                <small class="text-muted">21 March 2011</small>
-              </div>
-            </div>
-            <div class="my-auto ml-auto">
-              <button class="btn btn-sm btn-white py-0" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <h5>...</h5> </button>
-              <ul class="dropdown-menu px-2" aria-labelledby="dropdownMenu1">
-                  <li><a href="#">Edit</a></li>
-                  <li><a href="#">Delete</a></li>
-                </ul>
-            </div>
-          </div>
-      <div class="card-body">
-        <!-- <h5 class="card-title">Instantly gentleman contained belonging exquisite now direction</h5> -->
-        <p class="card-text text-muted">West room at sent if year. Numerous indulged distance old law you. Total state as merit court green decay he. Steepest merit checking railway...</p>
-      </div>
-      <div class="card-footer border-top d-flex">
-          <button type="button" class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">456</span> </button>
-          <button type="button" class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> <span class="badge badge-danger">231</span> </button>
-          <button type="button" class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> <span class="badge badge-success">64</span> </button>
-          <button type="button" class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span class="badge badge-info">126</span> </button>
 
-        <div class="my-auto ml-auto">
-          <a class="btn btn-sm btn-white" href="#"> Read More. </a>
-        </div>
-      </div>
-      </div>
     </div>
     <div class="col-lg-1">
     </div>
