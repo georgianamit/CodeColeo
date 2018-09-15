@@ -243,13 +243,14 @@
                 var container;
                 var postContent;
                 if(postValue.parent){
-                    postValue = postValue.parent
+                    
                     share = '<small> shared the post of <a href="'+postValue.user.url+'">@'+ postValue.user.username +'</a></small>'
+                    postValue = postValue.parent
                 }
 
             
             if(share){
-                postContent = '<span class="card-post__author-name">'+ '<a href="' + '<a href="'+ postValue.user.url +'">@' + postValue.user.username +'</a>' + share +'</span>'+
+                postContent = '<span class="card-post__author-name">'+ '<a href="'+ postValue.user.url +'">@' + postValue.user.username +'</a>' + share +'</span>'+
                         '<small class="text-muted">'+ postValue.timesince +'</small>'+
                       '</div>'+
                     '</div>'+
