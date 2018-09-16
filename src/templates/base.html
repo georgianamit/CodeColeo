@@ -120,6 +120,7 @@
         {% block content %}
         
         {% endblock content %}
+        {% include "comment-modal.html" %}
         </div>
         <!-- end content-->
         <footer class="main-footer d-flex p-2 px-3 bg-white border-top">
@@ -163,7 +164,16 @@
     <script src="{% static 'scripts/shards-dashboards.1.0.0.min.js' %}"></script>
     <script src="{% static 'scripts/app/app-blog-overview.1.0.0.js' %}"></script>
     <script>
-        function loadPostContainer(postContainerID){
+        function getParameterByName(name, url) {
+                if (!url) url = window.location.href;
+                name = name.replace(/[\[\]]/g, '\\$&');
+                var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                        results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+        function loadPostContainer(postContainerID, fetchOneId){
             var query = getParameterByName('q')
             var postList = [];
             var nextPostUrl;
@@ -221,6 +231,20 @@
                     }
                 })
             })
+
+            $(document.body).on("click",".commentBtn", function(e){
+                e.preventDefault()
+                var this_ = $(this)
+                var parentId = this_.attr('data-id')
+                var username = this_.attr('data-user')
+                $('#commentModal').modal({})
+                $('#commentModal textarea').after("<input type='hidden' value='"+parentId+"' name='parent_id'/>")
+                $('#commentModal textarea').after("<input type='hidden' value='"+true+"' name='comment'/>")
+                $('#commentModal textarea').val('@'+username+' ')
+                $('#commentModal').on('shown.bs.modal',function(){
+                    $('textarea').focus()
+                })
+            })
         
             function updateHashLinks(){
                 $(".card-text").each(function(data){
@@ -235,22 +259,25 @@
             }
             
             function formatPost(postValue){
+                var preContent;
+                var container;
+                var postContent;
+                var isComment = postValue.comment;
+                var commentId = postValue.id
+                if(postValue.parent){
+                    commentId = postValue.parent.id
+                }
+                if(postValue.parent && !isComment){   
+                    preContent = '<small> shared the post of <a href="'+postValue.parent.user.url+'">@'+ postValue.parent.user.username +'</a></small>'
+                }else if(postValue.parent && isComment){
+                    preContent = '<small> commented on the post of <a href="'+postValue.parent.user.url+'">@'+ postValue.parent.user.username +'</a></small>'
+                }
                 var likeClass = ""
                 if(postValue.did_like){
                     likeClass = "text-success"
-                }
-                var share;
-                var container;
-                var postContent;
-                if(postValue.parent){
-                    
-                    share = '<small> shared the post of <a href="'+postValue.user.url+'">@'+ postValue.user.username +'</a></small>'
-                    postValue = postValue.parent
-                }
-
-            
-            if(share){
-                postContent = '<span class="card-post__author-name">'+ '<a href="'+ postValue.user.url +'">@' + postValue.user.username +'</a>' + share +'</span>'+
+                }         
+            if(preContent){
+                postContent = '<span class="card-post__author-name">'+ '<a href="'+ postValue.user.url +'">@' + postValue.user.username +'</a>' + preContent +'</span>'+
                         '<small class="text-muted">'+ postValue.timesince +'</small>'+
                       '</div>'+
                     '</div>'+
@@ -270,7 +297,7 @@
                   '<a class="mb-0 btn btn-sm btn-outline-light mr-1 likeBtn '+ likeClass +'" data-id='+ postValue.id +'><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">' + postValue.likes +'</span> </a>'+
                   '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> <span class="badge badge-danger">231</span> </a>'+
                   '<a class="mb-0 btn btn-sm btn-outline-light mr-1 shareBtn" href="/post/share/' + postValue.id +'"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> <span class="badge badge-success">64</span> </a>'+
-                  '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span class="badge badge-info">126</span> </a>'+
+                  '<a class="mb-0 btn btn-sm btn-outline-light mr-1 commentBtn" ' +'data-id='+ commentId +' data-user='+ postValue.user.username +'><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span class="badge badge-info">126</span> </a>'+
                 '<div class="my-auto ml-auto">'+
                   '<a class="btn btn-sm btn-white" href="/post/detail/' + postValue.id + '"> Read More. </a>'+
                 '</div>'
@@ -295,7 +322,7 @@
                   '<a class="mb-0 btn btn-sm btn-outline-light mr-1 likeBtn '+ likeClass +'" data-id='+ postValue.id +'><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="badge badge-primary">' + postValue.likes +'</span> </a>'+
                   '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> <span class="badge badge-danger">231</span> </a>'+
                   '<a class="mb-0 btn btn-sm btn-outline-light mr-1 shareBtn" href="/post/share/' + postValue.id +'"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> <span class="badge badge-success">64</span> </a>'+
-                  '<a class="mb-0 btn btn-sm btn-outline-light mr-1"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span class="badge badge-info">126</span> </a>'+
+                  '<a class="mb-0 btn btn-sm btn-outline-light mr-1 commentBtn" ' +'data-id='+ commentId +' data-user='+ postValue.user.username +'><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span class="badge badge-info">126</span> </a>'+
                 '<div class="my-auto ml-auto">'+
                   '<a class="btn btn-sm btn-white" href="/post/detail/' + postValue.id + '"> Read More. </a>'+
                 '</div>'
@@ -366,7 +393,30 @@
                     }    
                 })
             }
-            fetchPosts()
+
+            function fetchSingle(fetchOneId) {
+
+                $.ajax({
+                    url: '/api/post/detail/'+fetchOneId+'/',
+                    method: 'GET',
+                    success: function (data) {
+                        console.log(data)
+                        postList = data.results
+                        parsePosts()
+                        updateHashLinks()
+                    },
+                    error: function (data) {
+                        console.log("error")
+                        console.log(data)
+                    }    
+                })
+            }
+            
+            if(fetchOneId){
+                fetchSingle(fetchOneId)
+            }else{
+                fetchPosts()
+            }
         
             $('#loadmore').click(function(event){
                 event.preventDefault()
@@ -375,7 +425,7 @@
                 }
             })
         
-            $("#post-form").submit(function(event){
+            $(".post-form").submit(function(event){
                 event.preventDefault()
                 var this_ = $(this) 
                 var formData = this_.serialize()
@@ -388,6 +438,7 @@
                         attachPost(data,true);
                         updateHashLinks()
                         this_.find("input[type=text], textarea").val("")
+                        $('#commentModal').modal("hide")
                     },
                     error: function (data) {
                         console.log("error")

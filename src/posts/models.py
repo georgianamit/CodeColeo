@@ -41,7 +41,8 @@ class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,default=1)
     title = models.CharField(max_length=50, blank=True, null=True)
     content = models.CharField(max_length=155)
-    liked = models.ManyToManyField(settings.AUTH_USER_MODEL, default=0, related_name="liked")
+    liked = models.ManyToManyField(settings.AUTH_USER_MODEL,null=True, default=0, related_name="liked")
+    comment = models.BooleanField(verbose_name="Is a comment?", default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
