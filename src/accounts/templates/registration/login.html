@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% block sidebar %}
+{% endblock sidebar %}
+
+{% block main-container-bar %}
+<main class="main-content  col-sm-12 p-0 {% if sidebar %} col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3 {% else %} col-lg-12 col-md-12 col-sm-12 p-0 {% endif %}">
+    <div class="main-navbar sticky-top bg-white">
+{% endblock main-container-bar %}
+
+
+{% block navbar-logo %}
+    <a class="navbar-brand w-25 mr-0" href="#" style="line-height: 25px;">
+        <div class="d-table m-auto">
+            <span class="d-none d-md-inline ml-1" style="font-family: 'Press Start 2P', cursive; font-size: 24px; ">Code</span> <span class="d-none d-md-inline ml-1" style="font-family: 'Orbitron', sans-serif; font-size: 24px;">Coleo</span>
+        </div>
+    </a>
+{% endblock navbar-logo %}
+
+
+{% block page-header %}
+
+{% endblock page-header %}
+
+{% block content %}
+
+<div class="row mt-4">
+
+    <div class="col-lg-4 offset-lg-4">
+        <h2>Login</h2>
+            {% if form.errors %}
+            <p>Your username and password didn't match. Please try again.</p>
+            {% endif %}
+
+            {% if next %}
+                {% if user.is_authenticated %}
+                <p>Your account doesn't have access to this page. To proceed,
+                please login with an account that has access.</p>
+                {% else %}
+                <p>Please login to see this page.</p>
+                {% endif %}
+            {% endif %}
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <table>
+                <tr>
+                    <td>{{ form.username.label_tag }}</td>
+                    <td>{{ form.username }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.password.label_tag }}</td>
+                    <td>{{ form.password }}</td>
+                </tr>
+                </table>
+                
+                <input class="btn btn-primary" type="submit" value="login" />
+                <input type="hidden" name="next" value="{{ next }}" />
+            </form>
+            
+            {# Assumes you setup the password_reset view in your URLconf #}
+            <p><a href="{% url 'register' %}">Don't have a account?</a></p>
+    </div>
+</div>
+
+{% endblock content %}
