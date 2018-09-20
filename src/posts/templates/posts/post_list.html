@@ -6,7 +6,11 @@
 {% endblock page-title %}
 
 {% block scripts %}
-<script src="{% static 'scripts/post_list.js' %}"></script>
+<script>
+	$(document).ready(function () {
+			loadPostContainer("post-container")
+	});
+</script>
 {% endblock scripts %}
 
 {% block sidebar %}
