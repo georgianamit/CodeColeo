@@ -15,7 +15,7 @@ class PostManager(models.Manager):
         else:
             og_parent = parent_obj
 
-        qs = self.get_queryset().filter(user=user, parent= og_parent).filter(timestamp__year=timezone.now().year,timestamp__month=timezone.now().month, timestamp__day=timezone.now().day)
+        qs = self.get_queryset().filter(user=user, parent= og_parent).filter(timestamp__year=timezone.now().year,timestamp__month=timezone.now().month, timestamp__day=timezone.now().day, comment = False)
         if qs.exists():
             return None
 
@@ -49,9 +49,22 @@ class Post(models.Model):
     objects = PostManager()
     class Meta:
         ordering = ['-timestamp']
+
     def get_absolute_url(self):
         return reverse("post:detail", kwargs={"pk": self.pk})
     
+    def get_parent(self):
+        the_parent = self
+        if self.parent:
+            the_parent = self.parent
+        return the_parent
+
+    def get_children(self):
+        parent = self.get_parent()
+        qs = Post.objects.filter(parent=self)
+        qs_parent = Post.objects.filter(pk=parent.id)
+        return (qs | qs_parent)
+
 
     def __str__(self):
         return self.content

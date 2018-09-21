@@ -6,6 +6,8 @@ from .models import Post
 from .forms import PostModelForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 # Create your views here.
 
 class ShareView(View):
@@ -62,11 +64,11 @@ class PostDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
-        context["sidebar"] = True 
+        context["sidebar"] = False
         return context
     
 
-class PostListView(ListView):
+class PostListView(LoginRequiredMixin, ListView):
     template_name = "posts/post_list.html"
 
     def get_queryset(self, *args, **kwargs):

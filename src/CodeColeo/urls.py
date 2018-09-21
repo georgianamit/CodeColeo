@@ -19,15 +19,26 @@ from django.conf import settings
 from django.conf.urls.static import static
 from posts.views import PostListView
 from hashtags.views import HashTagView
+from hashtags.api.views import TagAPIView
+
+from .views import SearchView
+from posts.api.views import SearchAPIView
+from accounts.views import UserRegisterView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', PostListView.as_view(), name='home'),
+    url(r'^search/$', SearchView.as_view(), name='search'),
     url(r'^tags/(?P<hashtag>.*)/$', HashTagView.as_view(), name="hashtag"),
     url(r'^post/', include('posts.urls', namespace="post")),
+    url(r'^', include('django.contrib.auth.urls')),
+    url(r'^register/$', UserRegisterView.as_view(), name='register'),
     url(r'^', include('accounts.urls', namespace="profiles")),
     url(r'^api/post/', include('posts.api.urls', namespace="post-api")),
     url(r'^api/', include('accounts.api.urls', namespace="profiles-api")),
+    url(r'^api/search/$', SearchAPIView.as_view(), name="search-api"),
+    url(r'^api/tags/(?P<hashtag>.*)/$', TagAPIView.as_view(), name="tags-api"),
+
 ]
 
 if settings.DEBUG:

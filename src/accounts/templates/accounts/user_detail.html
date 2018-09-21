@@ -60,6 +60,14 @@
             <strong class="text-muted d-block mb-2">Description</strong>
             <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio eaque, quidem, commodi soluta qui quae minima obcaecati quod dolorum sint alias, possimus illum assumenda eligendi cumque?</span>
           </li>
+          <li class="list-group-item p-4">
+              <strong class="text-muted d-block mb-2">Recommended Users</strong>
+              {% for profile in recommended %}
+              <a href="/{{ profile.user.username }}">{{ profile.user.username }}</a><br>
+              {% empty %}
+              <p>Currently no User is recommended for you.</p>
+              {% endfor %}
+            </li>
         </ul>
       </div>
     </div>

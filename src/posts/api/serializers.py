@@ -24,10 +24,13 @@ class ParentPostModelSerializer(serializers.ModelSerializer):
         
     def get_did_like(self, obj):
         request = self.context.get("request")
-        user = request.user
-        if user.is_authenticated():
-            if user in obj.liked.all():
-                return True
+        try:
+            user = request.user
+            if user.is_authenticated():
+                if user in obj.liked.all():
+                    return True
+        except:
+            pass
         return False
 
     def get_likes(self, obj):
@@ -69,10 +72,13 @@ class PostModelSerializer(serializers.ModelSerializer):
 
     def get_did_like(self, obj):
         request = self.context.get("request")
-        user = request.user
-        if user.is_authenticated():
-            if user in obj.liked.all():
-                return True
+        try:
+            user = request.user
+            if user.is_authenticated():
+                if user in obj.liked.all():
+                    return True
+        except:
+            pass
         return False
 
     def get_date_display(self,obj):

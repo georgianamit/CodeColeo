@@ -7,6 +7,7 @@ from .pagination import StandardResultsPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+
 class LikeToggleAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def get(self, request, pk, format=None):
@@ -21,13 +22,14 @@ class ShareAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def get(self, request, pk, format=None):
         post_qs = Post.objects.filter(pk=pk)
+        message = "Not allowed"
         if post_qs.exists() and post_qs.count() == 1:
             # if request.user.is_authenticated():
             new_post = Post.objects.share(request.user, post_qs.first())
             if new_post is not None:
                 data = PostModelSerializer(new_post).data
-                return Response(data)
-        return Response(None, status=400)
+            message = "Cannot retweet the same in 1 day"
+        return Response({"message": message}, status=400)
 
 class PostCreateAPIView(generics.CreateAPIView):
     serializer_class = PostModelSerializer
@@ -35,6 +37,21 @@ class PostCreateAPIView(generics.CreateAPIView):
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class PostDetailAPIView(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostModelSerializer
+    pagination_class = StandardResultsPagination
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self, *args, **kwargs):
+        post_id = self.kwargs.get("pk")
+        qs = Post.objects.filter(pk=post_id)
+        if qs.exists() and qs.count() == 1:
+            parent_obj = qs.first()
+            qs1 = parent_obj.get_children()
+            qs = (qs | qs1).distinct().extra(select={"parent_id_null": 'parent_id IS NULL'})
+        return qs.order_by("-parent_id_null","-timestamp")
 
 class PostListAPIView(generics.ListAPIView):
     serializer_class = PostModelSerializer
@@ -60,4 +77,26 @@ class PostListAPIView(generics.ListAPIView):
                 Q(content__icontains = query) |
                 Q(user__username__icontains = query))
         return qs
+    
+
+class SearchAPIView(generics.ListAPIView):
+    queryset = Post.objects.all().order_by("-timestamp")
+    serializer_class = PostModelSerializer
+    pagination_class = StandardResultsPagination
+
+    def get_serializer_context(self, *args, **kwargs):
+        context = super(SearchAPIView, self).get_serializer_context(*args, **kwargs)
+        context['request'] = self.request
+        return context
+
+    def get_queryset(self, *args, **kwargs):
+        qs = self.queryset
+        query = self.request.GET.get('q', None)
+        if query is not None:
+            qs = qs.filter(
+                Q(content__icontains = query) |
+                Q(user__username__icontains = query))
+        return qs
+
+
     
