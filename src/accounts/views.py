@@ -35,8 +35,6 @@ class UserRegisterView(FormView):
         new_user.set_password(password)
         new_user.save()
         return super(UserRegisterView, self).form_valid(form)
-    
-
 
 class UserFollowView(View):
 
